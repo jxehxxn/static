@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Capture for YOLO Prediction</title>
+</head>
+<body>
+    <video id="webcam" autoplay playsinline width="640" height="480"></video>
+    <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+    <img id="prediction" width="640" height="480" alt="YOLO Prediction Result" style="display: none; margin-top: 20px;">
+
+
+    <script>
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const predictionImage = document.getElementById('prediction');
+
+        // Access the webcam stream
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error("Unable to access the webcam.", error);
+            });
+
+        // Capture image and send it to the server every 3 seconds
+        setInterval(() => {
+            // Draw the current frame from the video on the canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas image to Blob in JPEG format
+            canvas.toBlob((blob) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64data = reader.result.split(',')[1]; // Remove the "data:image/jpeg;base64," prefix
+                    
+                    // Prepare JSON payload with base64 encoded image
+                    const payload = JSON.stringify({ image: base64data });
+
+                    // Send the image to the server using POST request
+                    fetch("https://7d54-210-102-178-78.ngrok-free.app/predict", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: payload
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log("YOLO model result:", result);
+                                                // Display the prediction result image
+                        if (result && result.image) {
+                            predictionImage.src = "data:image/jpeg;base64," + result.image;
+                            predictionImage.style.display = "block";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Failed to send image to YOLO model.", error);
+                    });
+                };
+                reader.readAsDataURL(blob);
+            }, "image/jpeg");
+        }, 3000); // Execute every 3 seconds
+    </script>
+</body>
+</html>
