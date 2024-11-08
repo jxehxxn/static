@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team L : Term Project, Machine Learning</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+        * {
+            font-family: "Pretendard Variable", Arial, Helvetica, sans-serif;
+        }
+    
+        .relative {
+            position: relative;
+        }
+
+        #movie-input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        #suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            margin-top: 0.5rem;
+            background-color: #ffffff;
+            color: #333333;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+    
+        .autocomplete-suggestion {
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+        .autocomplete-suggestion:hover, .autocomplete-suggestion.highlighted {
+            background-color: #e0e0e0;
+        }
+    </style>
+
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+    <div class="text-center space-y-6">
+        <h1 class="text-4xl font-bold">🎬 GaFlix Movie Recommendation</h1>
+        <h2 class="text-xl">Team L : Term Project, Machine Learning, Fall 2024</h2>
+        
+        <div class="relative flex items-center justify-center space-x-2">
+            <input id="movie-input" type="text" placeholder="Enter movie title..." class="w-64 p-3 rounded-lg text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            <button id="search-btn" class="bg-blue-600 text-white font-semibold px-5 py-3 rounded-lg hover:bg-blue-700 transition">Search</button>
+            <div id="suggestions" class="absolute left-0 top-full w-64 mt-2 bg-white text-gray-800 rounded-lg shadow-lg overflow-hidden"></div>
+        </div>
+
+        <div id="movie-posters" class="flex items-center justify-center space-x-4 mt-8"></div>
+    </div>
+
+    <script>
+        const HOST = 'https://dimyuh-ip-210-102-178-78.tunnelmole.net';
+        const input = document.getElementById('movie-input');
+        const searchButton = document.getElementById('search-btn');
+        const suggestionsDiv = document.getElementById('suggestions');
+        const postersDiv = document.getElementById('movie-posters');
+        let currentIndex = -1;
+
+        
+        input.addEventListener('input', async () => {
+            const query = input.value.trim();
+            if (query.length > 0) {
+                const response = await fetch(`${HOST}/autocomplete?query=${encodeURIComponent(query)}`);
+                const suggestions = await response.json();
+                displaySuggestions(suggestions);
+            } else {
+                suggestionsDiv.innerHTML = '';
+            }
+            currentIndex = -1;  
+        });
+
+        
+        input.addEventListener('keydown', (event) => {
+            const suggestionItems = document.querySelectorAll('.autocomplete-suggestion');
+
+            
+            if (event.key === 'ArrowDown') {
+                if (currentIndex < suggestionItems.length - 1) {
+                    currentIndex++;
+                    updateHighlight(suggestionItems);
+                }
+            }
+
+            
+            else if (event.key === 'ArrowUp') {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateHighlight(suggestionItems);
+                }
+            }
+
+            
+            else if (event.key === 'Enter') {
+                event.preventDefault();
+                if (currentIndex >= 0 && currentIndex < suggestionItems.length) {
+                    input.value = suggestionItems[currentIndex].textContent;
+                    suggestionsDiv.innerHTML = '';
+                    searchMovies();  
+                }
+            }
+        });
+
+        
+        searchButton.addEventListener('click', () => {
+            searchMovies();
+        });
+
+        
+        async function searchMovies() {
+            const query = input.value.trim();
+            if (query) {
+                const response = await fetch(`${HOST}/api/recommendations?query=${encodeURIComponent(query)}`);
+                const movies = await response.json();
+                displayPosters(movies);
+            }
+        }
+
+        
+        function displaySuggestions(suggestions) {
+            suggestionsDiv.innerHTML = '';
+            if (suggestions.length > 0) {
+                suggestions.forEach((suggestion, index) => {
+                    const div = document.createElement('div');
+                    div.classList.add('autocomplete-suggestion');
+                    div.textContent = suggestion;
+                    div.addEventListener('click', () => {
+                        input.value = suggestion;
+                        suggestionsDiv.innerHTML = '';
+                        searchMovies();  
+                    });
+                    suggestionsDiv.appendChild(div);
+                });
+            } else {
+                const div = document.createElement('div');
+                div.classList.add('autocomplete-suggestion');
+                div.textContent = 'No suggestions';
+                suggestionsDiv.appendChild(div);
+            }
+        }
+
+        
+        function displayPosters(movies) {
+    const apiKey = 'ad1557e9'; 
+    postersDiv.innerHTML = '';
+    
+    if (movies.length > 0) {
+        movies.slice(0, 5).forEach(movie => {
+            const searchUrl = `http://www.omdbapi.com/?i=tt3896198&apikey=${apiKey}&t=${encodeURIComponent(movie.title)}`;
+              fetch(searchUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.Poster && data.Poster !== 'N/A') {
+                                const img = document.createElement('img');
+                                img.src = data.Poster;
+                                img.alt = movie.title;
+                                img.classList.add('w-32', 'h-48', 'rounded-lg', 'shadow-lg', 'hover:shadow-2xl', 'transition', 'transform', 'hover:scale-105');
+                                postersDiv.appendChild(img);
+                            } else {
+                                console.log(`Cannot find: ${movie.title}`);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            } else {
+                postersDiv.innerHTML = '<p class="text-gray-400">No recommendations found.</p>';
+            }
+        }
+
+        
+        function updateHighlight(suggestionItems) {
+            suggestionItems.forEach((item, index) => {
+                item.classList.toggle('highlighted', index === currentIndex);
+            });
+        }
+    </script>
+</body>
+</html>
