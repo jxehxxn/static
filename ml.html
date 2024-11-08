@@ -157,7 +157,7 @@
     
     if (movies.length > 0) {
         movies.slice(0, 5).forEach(movie => {
-            const searchUrl = `http://www.omdbapi.com/?i=tt3896198&apikey=${apiKey}&t=${encodeURIComponent(movie.title)}`;
+            const searchUrl = `https://www.omdbapi.com/?i=tt3896198&apikey=${apiKey}&t=${encodeURIComponent(movie.title)}`;
               fetch(searchUrl)
                         .then(response => response.json())
                         .then(data => {
