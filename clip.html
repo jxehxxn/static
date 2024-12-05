@@ -21,10 +21,10 @@
 
     
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
-    <link rel="manifest" href="/static/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://2f99-210-102-178-78.ngrok-free.app/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://2f99-210-102-178-78.ngrok-free.app/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://2f99-210-102-178-78.ngrok-free.app/static/favicon-16x16.png">
+    <link rel="manifest" href="https://2f99-210-102-178-78.ngrok-free.app/static/site.webmanifest">
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#0F172A">
@@ -37,6 +37,7 @@
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://2f99-210-102-178-78.ngrok-free.app/">
+    <base href="https://2f99-210-102-178-78.ngrok-free.app/">
     
     <!-- Fonts and Styles -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -209,7 +210,7 @@
                 } else if (data.status === "completed") {
                     progressSection.classList.add("hidden");
                     resultSection.classList.remove("hidden");
-                    downloadLink.href = `/ffmpeg/download?output_file=${encodeURIComponent(data.output_file)}`;
+                    downloadLink.href = `https://2f99-210-102-178-78.ngrok-free.app/ffmpeg/download?output_file=${encodeURIComponent(data.output_file)}`;
                     downloadLink.textContent = `Download ${data.output_file.split("/").pop()}`;
                 } else if (data.status === "error") {
                     showError(data.error);
@@ -255,7 +256,7 @@
 
                     progressSection.classList.add("hidden");
                     resultSection.classList.remove("hidden");
-                    downloadLink.href = `/ffmpeg/download?output_file=${encodeURIComponent(result.output_file)}`;
+                    downloadLink.href = `https://2f99-210-102-178-78.ngrok-free.app/ffmpeg/download?output_file=${encodeURIComponent(result.output_file)}`;
                     downloadLink.textContent = `Download ${result.output_file.split("/").pop()}`;
 
                 } catch (error) {
