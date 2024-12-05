@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>SnapClip - Turn Photos into Video Stories</title>
+    <meta name="title" content="SnapClip - Turn Photos into Video Stories">
+    <meta name="description" content="Transform your photos and captions into engaging video stories with AI-powered voice narration. Fast, easy, and magical video creation.">
+    <meta name="keywords" content="video creation, photo slideshow, AI voice over, story telling, video maker, image to video">
+    <meta name="author" content="SnapClip">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://2f99-210-102-178-78.ngrok-free.app/">
+    <meta property="og:title" content="SnapClip - Turn Photos into Video Stories">
+    <meta property="og:description" content="Transform your photos and captions into engaging video stories with AI-powered voice narration. Fast, easy, and magical video creation.">
+    <meta property="og:image" content="https://2f99-210-102-178-78.ngrok-free.app/static/og-image.png">
+
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0F172A">
+    <meta name="msapplication-TileColor" content="#0F172A">
+    
+    <!-- iOS Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SnapClip">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://2f99-210-102-178-78.ngrok-free.app/">
+    
+    <!-- Fonts and Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    
+    <!-- JSON-LD for Rich Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SnapClip",
+      "description": "Transform your photos and captions into engaging video stories with AI-powered voice narration.",
+      "url": "https://2f99-210-102-178-78.ngrok-free.app",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "AI Voice Narration",
+        "Photo to Video Conversion",
+        "Custom Captions",
+        "Instant Processing"
+      ]
+    }
+    </script>
+    
+    <style>
+        * { 
+            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+        }
+        .glass-effect {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4">
+    <div class="glass-effect w-full max-w-2xl rounded-2xl p-8 shadow-2xl border border-slate-700/50">
+        <h1 class="text-4xl font-bold text-white mb-2 text-center tracking-tight">SnapClip</h1>
+
+        <!-- Error Section -->
+        <div id="error-section" class="hidden mb-6 p-4 bg-red-900/50 border border-red-700/50 text-red-200 rounded-xl">
+            <h3 class="font-bold mb-2">An error occurred</h3>
+            <p id="error-message" class="text-sm"></p>
+        </div>
+
+        <!-- Upload Form -->
+        <form id="upload-form" class="space-y-6">
+            <!-- Dynamic Image Upload Section -->
+            <div id="image-fields" class="space-y-4">
+                <label class="block text-slate-200 font-semibold text-sm uppercase tracking-wider">Add Images and Descriptions</label>
+                <div class="image-input bg-slate-800/50 p-4 border border-slate-700/50 rounded-xl flex space-x-4 items-center">
+                    <input type="file" name="images_file[]" accept="image/*" 
+                           class="file-input w-2/3 p-2 text-sm text-slate-300 
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-full file:border-0
+                                  file:text-sm file:font-semibold
+                                  file:bg-slate-700 file:text-slate-200
+                                  hover:file:bg-slate-600
+                                  cursor-pointer" required>
+                    <input type="text" name="images_caption[]" placeholder="Caption for this image" 
+                           class="w-1/3 p-2 rounded-lg bg-slate-800 border border-slate-700/50 
+                                  text-slate-200 placeholder-slate-500 focus:outline-none 
+                                  focus:ring-2 focus:ring-blue-500/50 focus:border-transparent" required>
+                    <button type="button" 
+                            class="add-image-btn text-white bg-emerald-600/80 hover:bg-emerald-500/80 
+                                   px-3 py-2 rounded-lg transition-colors duration-200">+</button>
+                </div>
+            </div>
+
+            <button type="submit" 
+                    class="w-full bg-blue-600/80 hover:bg-blue-500/80 text-white py-3 rounded-xl 
+                           text-lg font-semibold transition-colors duration-200 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500/50">
+                Create Video
+            </button>
+        </form>
+
+        <!-- Progress Section -->
+        <div id="progress-section" class="mt-6 hidden">
+            <h2 class="text-lg font-semibold text-slate-200 mb-4">Creating Video...</h2>
+            <div class="bg-slate-800/50 rounded-full h-4 overflow-hidden border border-slate-700/50">
+                <div id="progress-bar" 
+                     class="bg-gradient-to-r from-blue-600/80 to-emerald-500/80 h-4 rounded-full 
+                            transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p id="progress-text" class="mt-2 text-sm text-slate-400">Starting the magic...</p>
+        </div>
+
+        <!-- Result Section -->
+        <div id="result-section" class="mt-6 hidden">
+            <h2 class="text-lg font-semibold text-emerald-400 mb-4">Video is Ready!</h2>
+            <a id="download-link" href="#" 
+               class="inline-block bg-emerald-600/80 hover:bg-emerald-500/80 text-white 
+                      px-6 py-2 rounded-xl transition-colors duration-200 
+                      focus:outline-none focus:ring-2 focus:ring-emerald-500/50">
+                Download Video
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const HOST = '2f99-210-102-178-78.ngrok-free.app';
+        document.addEventListener("DOMContentLoaded", () => {
+            const uploadForm = document.getElementById("upload-form");
+            const progressSection = document.getElementById("progress-section");
+            const progressBar = document.getElementById("progress-bar");
+            const progressText = document.getElementById("progress-text");
+            const resultSection = document.getElementById("result-section");
+            const downloadLink = document.getElementById("download-link");
+            const errorSection = document.getElementById("error-section");
+            const errorMessage = document.getElementById("error-message");
+            const imageFieldsContainer = document.getElementById("image-fields");
+
+            // Add new image and caption input field
+            function addImageField() {
+                const div = document.createElement("div");
+                div.classList.add("image-input", "bg-slate-800/50", "p-4", "border", "border-slate-700/50", "rounded-xl", "flex", "space-x-4", "items-center");
+                div.innerHTML = `
+                    <input type="file" name="images_file[]" accept="image/*" class="file-input w-2/3 p-2 text-sm text-slate-300 
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-full file:border-0
+                                  file:text-sm file:font-semibold
+                                  file:bg-slate-700 file:text-slate-200
+                                  hover:file:bg-slate-600
+                                  cursor-pointer" required>
+                    <input type="text" name="images_caption[]" placeholder="Caption for this image" class="w-1/3 p-2 rounded-lg bg-slate-800 border border-slate-700/50 
+                                  text-slate-200 placeholder-slate-500 focus:outline-none 
+                                  focus:ring-2 focus:ring-blue-500/50 focus:border-transparent" required>
+                    <button type="button" class="remove-image-btn text-white bg-red-600/80 hover:bg-red-500/80 
+                                   px-3 py-2 rounded-lg transition-colors duration-200">-</button>
+                `;
+                imageFieldsContainer.appendChild(div);
+
+                // Add event listener to the remove button
+                div.querySelector(".remove-image-btn").addEventListener("click", () => {
+                    div.remove();
+                });
+            }
+
+            // Handle add image button click
+            imageFieldsContainer.addEventListener("click", (e) => {
+                if (e.target.classList.contains("add-image-btn")) {
+                    addImageField();
+                }
+            });
+
+            function showError(message) {
+                errorSection.classList.remove("hidden");
+                errorMessage.textContent = message;
+                progressSection.classList.add("hidden");
+            }
+
+            function hideError() {
+                errorSection.classList.add("hidden");
+            }
+
+            const websocketId = Math.random().toString(36).substring(2, 15);
+            const websocket = new WebSocket(`wss://${HOST}/ffmpeg/ws/${websocketId}`);
+
+            websocket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                if (data.status === "processing") {
+                    progressBar.style.width = `${data.progress}%`;
+                    progressText.textContent = `Processing: ${data.progress.toFixed(2)}%`;
+                } else if (data.status === "completed") {
+                    progressSection.classList.add("hidden");
+                    resultSection.classList.remove("hidden");
+                    downloadLink.href = `/ffmpeg/download?output_file=${encodeURIComponent(data.output_file)}`;
+                    downloadLink.textContent = `Download ${data.output_file.split("/").pop()}`;
+                } else if (data.status === "error") {
+                    showError(data.error);
+                }
+            };
+
+            websocket.onerror = (error) => {
+                showError("WebSocket error occurred.");
+            };
+
+            uploadForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                hideError();
+
+                const formData = new FormData(uploadForm);
+
+                try {
+                    // validateFiles(formData);
+
+                    progressSection.classList.remove("hidden");
+                    resultSection.classList.add("hidden");
+
+                    const response = await fetch(`https://${HOST}/ffmpeg/process`, {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        let errorMsg = "Error";
+                        if (result.detail) {
+                            if (result.detail.includes("Impossible to open")) {
+                                errorMsg = "Impossible to open.";
+                            } else if (result.detail.includes("No such file or directory")) {
+                                errorMsg = "No such file or directory.";
+                            } else {
+                                errorMsg = `Error: ${result.detail}`;
+                            }
+                        }
+                        throw new Error(errorMsg);
+                    }
+
+                    progressSection.classList.add("hidden");
+                    resultSection.classList.remove("hidden");
+                    downloadLink.href = `/ffmpeg/download?output_file=${encodeURIComponent(result.output_file)}`;
+                    downloadLink.textContent = `Download ${result.output_file.split("/").pop()}`;
+
+                } catch (error) {
+                    let errorMessage = data.error;
+                    if (typeof data.error === 'object') {
+                        // FastAPI의 validation 에러 처리
+                        if (data.error.detail) {
+                            errorMessage = Array.isArray(data.error.detail) 
+                                ? data.error.detail.map(err => err.msg).join('\n')
+                                : data.error.detail;
+                        } else {
+                            errorMessage = JSON.stringify(data.error);
+                        }
+                    }
+                    showError("Error: " + errorMessage);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
