@@ -1,19 +1,20 @@
-# .NET 어셈블리들을 스크립트 시작 부분에서 미리 로드
-Add-Type -AssemblyName "Microsoft.VisualBasic"
+# MessageBox를 사용하기 위해 System.Windows.Forms 어셈블리를 로드합니다.
 Add-Type -AssemblyName "System.Windows.Forms"
 
-# 사용자로부터 이름을 입력 받는 InputBox 창 띄우기
-$name = [Microsoft.VisualBasic.Interaction]::InputBox("Enter your name:", "Name Input", "")
+# 현재 시간을 "년-월-일 시:분:초" 형식의 문자열로 가져옵니다.
+$currentTime = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 
-# 이름이 비어있지 않으면, 'Hello, [Name]!' 메시지를 띄우고 웹 브라우저에서 이름 검색
-if ($name -ne "") {
-    # Hello, [Name]! 메시지 박스 띄우기
-    [System.Windows.Forms.MessageBox]::Show("Hello, $name!");
+# --------------------------------------------------------------------
+# 1. 터미널과 메시지 박스 양쪽에 사용할 메시지를 변수에 저장합니다.
+# --------------------------------------------------------------------
+$message = "$currentTime @ HDFLab"
 
-    # 입력한 이름으로 웹 브라우저에서 검색 (Google에서 검색)
-    $searchUrl = "https://www.google.com/search?q=$name"
-    Start-Process $searchUrl
-} else {
-    # 이름이 입력되지 않으면 경고 메시지
-    [System.Windows.Forms.MessageBox]::Show("Please enter a name.", "Warning", "OK", "Warning")
-}
+# --------------------------------------------------------------------
+# 2. Write-Host를 사용해 터미널(콘솔)에 메시지를 출력합니다.
+# --------------------------------------------------------------------
+Write-Host $message
+
+# --------------------------------------------------------------------
+# 3. MessageBox를 사용해 GUI 팝업창으로 메시지를 띄웁니다.
+# --------------------------------------------------------------------
+[System.Windows.Forms.MessageBox]::Show($message, "알림")
